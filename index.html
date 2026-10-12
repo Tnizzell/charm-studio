@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Charm Studio | Create Your Keychain</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #101018;
+    color: white;
+}
+
+header {
+    padding: 22px 35px;
+    background: #171720;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.logo span {
+    color: #c8a6ff;
+}
+
+.subtitle {
+    color: #999;
+    font-size: 12px;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    min-height: calc(100vh - 75px);
+}
+
+/* 3D VIEWER */
+
+.viewer-section {
+    position: relative;
+    min-height: 600px;
+
+    background:
+        radial-gradient(
+            circle,
+            #353047,
+            #15151f 70%
+        );
+}
+
+#viewer {
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+    touch-action: pan-y;
+}
+
+.viewer-title {
+    position: absolute;
+    top: 30px;
+    left: 35px;
+    pointer-events: none;
+}
+
+.viewer-title h1 {
+    font-size: 38px;
+    margin: 10px 0;
+}
+
+.viewer-title p {
+    color: #aaa;
+}
+
+.viewer-hint {
+    position: absolute;
+    bottom: 25px;
+    left: 35px;
+    color: #aaa;
+    font-size: 13px;
+    pointer-events: none;
+}
+
+/* CUSTOMIZATION PANEL */
+
+.panel {
+    background: #1b1b26;
+    padding: 30px;
+    border-left: 1px solid #333;
+}
+
+.panel h2 {
+    margin-top: 0;
+}
+
+.description {
+    color: #aaa;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+label {
+    display: block;
+    margin-top: 24px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #ccc;
+}
+
+textarea,
+input,
+select {
+    width: 100%;
+    padding: 13px;
+    background: #292938;
+    color: white;
+    border: 1px solid #444;
+    border-radius: 9px;
+    font-size: 14px;
+}
+
+textarea {
+    min-height: 95px;
+    resize: vertical;
+}
+
+.mode-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.mode-buttons button {
+    flex: 1;
+    padding: 12px 5px;
+    border-radius: 8px;
+    background: #303040;
+    color: white;
+    border: 1px solid #555;
+    cursor: pointer;
+}
+
+.mode-buttons button.active {
+    background: #654d89;
+    border-color: #c8a6ff;
+}
+
+.colors {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.color {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #777;
+}
+
+.color.active {
+    outline: 2px solid white;
+    outline-offset: 3px;
+}
+
+.generate {
+    width: 100%;
+    padding: 17px;
+    margin-top: 30px;
+    background: #c8a6ff;
+    color: #181020;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.generate:hover {
+    background: #ddc7ff;
+}
+
+.notice {
+    color: #aaa;
+    font-size: 12px;
+    margin-top: 20px;
+    line-height: 1.6;
+}
+
+#status {
+    color: #c8a6ff;
+    margin-top: 15px;
+    font-size: 13px;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 850px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+
+    .viewer-section,
+    #viewer {
+        min-height: 450px;
+        height: 55vh;
+    }
+
+    .viewer-title h1 {
+        font-size: 28px;
+    }
+
+    .panel {
+        border-left: none;
+        border-top: 1px solid #333;
+    }
+
+    header {
+        padding: 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        charm<span>studio.</span>
+    </div>
+
+    <div class="subtitle">
+        CREATE SOMETHING PERSONAL
+    </div>
+</header>
+
+<main>
+
+    <!-- 3D SHOWCASE -->
+
+    <section class="viewer-section">
+
+        <div id="viewer"></div>
+
+        <div class="viewer-title">
+            <p>YOUR CREATION</p>
+            <h1>Make it yours.</h1>
+            <p>Personalized 3D keychains</p>
+        </div>
+
+        <div class="viewer-hint">
+            Drag to rotate · Scroll or pinch to zoom
+        </div>
+
+    </section>
+
+    <!-- CREATION PANEL -->
+
+    <aside class="panel">
+
+        <h2>Create Your Keychain</h2>
+
+        <p class="description">
+            Turn your ideas into personalized
+            3D keychain designs.
+        </p>
+
+        <label>Creation Method</label>
+
+        <div class="mode-buttons">
+
+            <button class="active" data-mode="description">
+                Describe
+            </button>
+
+            <button data-mode="photo">
+                Photo
+            </button>
+
+            <button data-mode="name">
+                Name
+            </button>
+
+        </div>
+
+        <div id="description-mode">
+
+            <label>Describe Your Idea</label>
+
+            <textarea id="prompt"
+                placeholder="Describe your keychain...">A cute heart-shaped keychain</textarea>
+
+        </div>
+
+        <div id="photo-mode" class="hidden">
+
+            <label>Upload a Reference Photo</label>
+
+            <input
+                type="file"
+                id="photo"
+                accept="image/*"
+            >
+
+            <p class="notice">
+                Photo-to-3D generation will be
+                connected in a later version.
+            </p>
+
+        </div>
+
+        <div id="name-mode" class="hidden">
+
+            <label>Enter Your Name</label>
+
+            <input
+                type="text"
+                id="name"
+                maxlength="12"
+                placeholder="Your name"
+            >
+
+        </div>
+
+        <label>Keychain Shape</label>
+
+        <select id="shape">
+            <option value="heart">Heart</option>
+            <option value="star">Star</option>
+            <option value="circle">Circle</option>
+            <option value="flower">Flower</option>
+        </select>
+
+        <label>Keychain Size</label>
+
+        <select id="size">
+            <option value="0.8">Small</option>
+            <option value="1" selected>Medium</option>
+            <option value="1.25">Large</option>
+        </select>
+
+        <label>Choose Color</label>
+
+        <div class="colors">
+
+            <div class="color active"
+                style="background:#c8a6ff"
+                data-color="#c8a6ff">
+            </div>
+
+            <div class="color"
+                style="background:#ff9cbb"
+                data-color="#ff9cbb">
+            </div>
+
+            <div class="color"
+                style="background:#8fdac5"
+                data-color="#8fdac5">
+            </div>
+
+            <div class="color"
+                style="background:#ffd28f"
+                data-color="#ffd28f">
+            </div>
+
+            <div class="color"
+                style="background:#ffffff"
+                data-color="#ffffff">
+            </div>
+
+        </div>
+
+        <button class="generate" id="generate">
+            Preview My Keychain
+        </button>
+
+        <p id="status">
+            Ready to create.
+        </p>
+
+        <p class="notice">
+            Prototype mode. This version uses
+            demonstration geometry rather than
+            live AI generation. Designs are not
+            yet validated for 3D printing.
+        </p>
+
+    </aside>
+
+</main>
+
+<script type="module">
+
+import * as THREE from
+"https://esm.sh/three@0.160.1";
+
+import { OrbitControls } from
+"https://esm.sh/three@0.160.1/examples/jsm/controls/OrbitControls.js";
+
+import { FontLoader } from
+"https://esm.sh/three@0.160.1/examples/jsm/loaders/FontLoader.js";
+
+import { TextGeometry } from
+"https://esm.sh/three@0.160.1/examples/jsm/geometries/TextGeometry.js";
+
+
+/* ============================
+   THREE.JS SCENE
+============================ */
+
+const container =
+    document.getElementById("viewer");
+
+const scene = new THREE.Scene();
+
+const camera = new THREE.PerspectiveCamera(
+    40,
+    1,
+    0.1,
+    100
+);
+
+camera.position.set(0, 0.5, 7);
+
+const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: true
+});
+
+renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio, 2)
+);
+
+renderer.outputColorSpace =
+    THREE.SRGBColorSpace;
+
+renderer.toneMapping =
+    THREE.ACESFilmicToneMapping;
+
+renderer.toneMappingExposure = 1.5;
+
+container.appendChild(renderer.domElement);
+
+
+/* ============================
+   CAMERA CONTROLS
+============================ */
+
+const controls = new OrbitControls(
+    camera,
+    renderer.domElement
+);
+
+controls.enableDamping = true;
+
+controls.dampingFactor = 0.06;
+
+controls.enablePan = false;
+
+controls.minDistance = 3;
+
+controls.maxDistance = 12;
+
+
+/* ============================
+   LIGHTING
+============================ */
+
+const ambient = new THREE.HemisphereLight(
+    0xffffff,
+    0x444466,
+    2
+);
+
+scene.add(ambient);
+
+const keyLight = new THREE.DirectionalLight(
+    0xffffff,
+    3
+);
+
+keyLight.position.set(4, 5, 6);
+
+scene.add(keyLight);
+
+const rimLight = new THREE.DirectionalLight(
+    0xbbaaff,
+    3
+);
+
+rimLight.position.set(-4, 2, -5);
+
+scene.add(rimLight);
+
+
+/* ============================
+   KEYCHAIN GROUP
+============================ */
+
+let charm = new THREE.Group();
+
+scene.add(charm);
+
+let selectedColor = "#c8a6ff";
+
+let selectedMode = "description";
+
+let font = null;
+
+
+/* ============================
+   MATERIALS
+============================ */
+
+function createMaterial(color) {
+
+    return new THREE.MeshPhysicalMaterial({
+
+        color: color,
+
+        metalness: 0.15,
+
+        roughness: 0.3,
+
+        clearcoat: 0.8,
+
+        clearcoatRoughness: 0.2
+
+    });
+
+}
+
+
+/* ============================
+   SHAPE GENERATION
+============================ */
+
+function createShape(type) {
+
+    const shape = new THREE.Shape();
+
+    if (type === "heart") {
+
+        shape.moveTo(0, -1);
+
+        shape.bezierCurveTo(
+            -0.4, -0.7,
+            -1.3, 0,
+            -1.1, 0.7
+        );
+
+        shape.bezierCurveTo(
+            -0.9, 1.4,
+            -0.2, 1.3,
+            0, 0.8
+        );
+
+        shape.bezierCurveTo(
+            0.2, 1.3,
+            0.9, 1.4,
+            1.1, 0.7
+        );
+
+        shape.bezierCurveTo(
+            1.3, 0,
+            0.4, -0.7,
+            0, -1
+        );
+
+    }
+
+    else if (type === "star") {
+
+        const outer = 1.2;
+        const inner = 0.55;
+
+        for (let i = 0; i < 10; i++) {
+
+            const angle =
+                Math.PI / 2 +
+                i * Math.PI / 5;
+
+            const radius =
+                i % 2 === 0 ? outer : inner;
+
+            const x =
+                Math.cos(angle) * radius;
+
+            const y =
+                Math.sin(angle) * radius;
+
+            if (i === 0) {
+                shape.moveTo(x, y);
+            } else {
+                shape.lineTo(x, y);
+            }
+
+        }
+
+        shape.closePath();
+
+    }
+
+    else if (type === "flower") {
+
+        for (let i = 0; i <= 120; i++) {
+
+            const angle =
+                i * Math.PI / 60;
+
+            const radius =
+                0.85 +
+                0.25 * Math.cos(6 * angle);
+
+            const x =
+                Math.cos(angle) * radius;
+
+            const y =
+                Math.sin(angle) * radius;
+
+            if (i === 0) {
+                shape.moveTo(x, y);
+            } else {
+                shape.lineTo(x, y);
+            }
+
+        }
+
+        shape.closePath();
+
+    }
+
+    else {
+
+        shape.absarc(
+            0,
+            0,
+            1.1,
+            0,
+            Math.PI * 2,
+            false
+        );
+
+    }
+
+    return shape;
+
+}
+
+
+/* ============================
+   BUILD KEYCHAIN
+============================ */
+
+function buildKeychain() {
+
+    scene.remove(charm);
+
+    charm = new THREE.Group();
+
+    scene.add(charm);
+
+    const shapeType =
+        document.getElementById("shape").value;
+
+    const size =
+        parseFloat(
+            document.getElementById("size").value
+        );
+
+    const shape = createShape(shapeType);
+
+    const geometry = new THREE.ExtrudeGeometry(
+        shape,
+        {
+            depth: 0.3,
+            bevelEnabled: true,
+            bevelThickness: 0.1,
+            bevelSize: 0.08,
+            bevelSegments: 4,
+            curveSegments: 40
+        }
+    );
+
+    const material =
+        createMaterial(selectedColor);
+
+    const body = new THREE.Mesh(
+        geometry,
+        material
+    );
+
+    charm.add(body);
+
+
+    /* ATTACHMENT LOOP */
+
+    const loopGeometry =
+        new THREE.TorusGeometry(
+            0.22,
+            0.075,
+            16,
+            48
+        );
+
+    const loopMaterial =
+        createMaterial("#dddddd");
+
+    const loop = new THREE.Mesh(
+        loopGeometry,
+        loopMaterial
+    );
+
+    loop.position.set(
+        0,
+        1.35,
+        0.2
+    );
+
+    charm.add(loop);
+
+
+    /* METAL KEY RING */
+
+    const ring = new THREE.Mesh(
+
+        new THREE.TorusGeometry(
+            0.32,
+            0.045,
+            12,
+            48
+        ),
+
+        new THREE.MeshStandardMaterial({
+            color: "#dddddd",
+            metalness: 0.9,
+            roughness: 0.2
+        })
+
+    );
+
+    ring.position.set(
+        0,
+        1.75,
+        0.2
+    );
+
+    charm.add(ring);
+
+
+    /* PERSONALIZED NAME */
+
+    if (
+        selectedMode === "name" &&
+        font
+    ) {
+
+        const name =
+            document.getElementById("name")
+            .value.trim().toUpperCase();
+
+        if (name) {
+
+            const textGeometry =
+                new TextGeometry(name, {
+
+                    font: font,
+
+                    size: Math.min(
+                        0.35,
+                        2.8 / name.length
+                    ),
+
+                    depth: 0.05,
+
+                    curveSegments: 6
+
+                });
+
+            textGeometry.computeBoundingBox();
+
+            const bounds =
+                textGeometry.boundingBox;
+
+            const width =
+                bounds.max.x - bounds.min.x;
+
+            textGeometry.translate(
+                -width / 2,
+                -0.12,
+                0.5
+            );
+
+            const textMesh =
+                new THREE.Mesh(
+
+                    textGeometry,
+
+                    createMaterial("#ffffff")
+
+                );
+
+            charm.add(textMesh);
+
+        }
+
+    }
+
+    charm.scale.setScalar(size);
+
+    document.getElementById("status")
+        .textContent =
+        "Preview updated successfully.";
+
+}
+
+
+/* ============================
+   FONT LOADING
+============================ */
+
+const fontLoader = new FontLoader();
+
+fontLoader.load(
+
+    "https://threejs.org/examples/fonts/helvetiker_bold.typeface.json",
+
+    loadedFont => {
+
+        font = loadedFont;
+
+        if (selectedMode === "name") {
+            buildKeychain();
+        }
+
+    }
+
+);
+
+
+/* ============================
+   CREATION MODES
+============================ */
+
+document.querySelectorAll(
+    ".mode-buttons button"
+).forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        document.querySelectorAll(
+            ".mode-buttons button"
+        ).forEach(b => {
+
+            b.classList.remove("active");
+
+        });
+
+        button.classList.add("active");
+
+        selectedMode = button.dataset.mode;
+
+        ["description", "photo", "name"]
+            .forEach(mode => {
+
+                document.getElementById(
+                    mode + "-mode"
+                ).classList.toggle(
+                    "hidden",
+                    mode !== selectedMode
+                );
+
+            });
+
+        buildKeychain();
+
+    });
+
+});
+
+
+/* ============================
+   COLOR SELECTION
+============================ */
+
+document.querySelectorAll(
+    ".color"
+).forEach(colorButton => {
+
+    colorButton.addEventListener(
+        "click",
+        () => {
+
+            document.querySelectorAll(
+                ".color"
+            ).forEach(c => {
+
+                c.classList.remove("active");
+
+            });
+
+            colorButton.classList.add(
+                "active"
+            );
+
+            selectedColor =
+                colorButton.dataset.color;
+
+            buildKeychain();
+
+        }
+    );
+
+});
+
+
+/* ============================
+   GENERATE PREVIEW
+============================ */
+
+document.getElementById("generate")
+    .addEventListener("click", () => {
+
+        buildKeychain();
+
+    });
+
+
+/* ============================
+   RESPONSIVE RENDERER
+============================ */
+
+function resizeViewer() {
+
+    const width =
+        container.clientWidth;
+
+    const height =
+        container.clientHeight;
+
+    camera.aspect = width / height;
+
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(
+        width,
+        height,
+        false
+    );
+
+}
+
+new ResizeObserver(
+    resizeViewer
+).observe(container);
+
+
+/* ============================
+   ANIMATION
+============================ */
+
+const clock = new THREE.Clock();
+
+function animate() {
+
+    requestAnimationFrame(animate);
+
+    const delta = Math.min(
+        clock.getDelta(),
+        0.05
+    );
+
+    charm.rotation.y += delta * 0.25;
+
+    controls.update();
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+
+/* ============================
+   INITIALIZE
+============================ */
+
+resizeViewer();
+
+buildKeychain();
+
+animate();
+
+</script>
+
+</body>
+</html>

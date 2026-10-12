@@ -1,468 +1,623 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Charm Studio | Create Your Keychain</title>
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
+<title>Charm Studio</title>
 
 <style>
+
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #101018;
-    color: white;
+  margin: 0;
+  width: 100%;
+  overflow-x: hidden;
+  background: #101018;
+  color: white;
+  font-family: Arial, sans-serif;
 }
 
 header {
-    padding: 22px 35px;
-    background: #171720;
-    border-bottom: 1px solid #333;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  padding: 22px 35px;
+  background: #171720;
+  border-bottom: 1px solid #333;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
 }
 
 .logo {
-    font-size: 24px;
-    font-weight: bold;
+  font-size: 24px;
+  font-weight: bold;
+  white-space: nowrap;
 }
 
 .logo span {
-    color: #c8a6ff;
+  color: #c8a6ff;
 }
 
 .subtitle {
-    color: #999;
-    font-size: 12px;
+  color: #999;
+  font-size: 12px;
 }
 
 main {
-    display: grid;
-    grid-template-columns: 1fr 380px;
-    min-height: calc(100vh - 75px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  min-height: calc(100vh - 75px);
 }
 
-/* 3D VIEWER */
+/* VIEWER */
 
 .viewer-section {
-    position: relative;
-    min-height: 600px;
+  position: relative;
+  min-width: 0;
+  min-height: 600px;
 
-    background:
-        radial-gradient(
-            circle,
-            #353047,
-            #15151f 70%
-        );
+  background:
+    radial-gradient(
+      circle,
+      #353047,
+      #15151f 70%
+    );
+
+  overflow: hidden;
 }
 
 #viewer {
-    width: 100%;
-    height: 100%;
-    min-height: 600px;
-    touch-action: pan-y;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  /* Allow normal vertical page scrolling */
+  touch-action: pan-y;
 }
 
 .viewer-title {
-    position: absolute;
-    top: 30px;
-    left: 35px;
-    pointer-events: none;
+  position: absolute;
+  top: 30px;
+  left: 35px;
+  pointer-events: none;
 }
 
 .viewer-title h1 {
-    font-size: 38px;
-    margin: 10px 0;
+  font-size: 38px;
+  margin: 10px 0;
 }
 
 .viewer-title p {
-    color: #aaa;
+  color: #aaa;
 }
 
 .viewer-hint {
-    position: absolute;
-    bottom: 25px;
-    left: 35px;
-    color: #aaa;
-    font-size: 13px;
-    pointer-events: none;
+  position: absolute;
+  bottom: 25px;
+  left: 35px;
+  color: #aaa;
+  font-size: 13px;
+  pointer-events: none;
 }
 
-/* CUSTOMIZATION PANEL */
+.viewer-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 80%;
+  max-width: 350px;
+  padding: 20px;
+
+  background: #292638;
+  border: 1px solid #b38ce8;
+  border-radius: 12px;
+
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* PANEL */
 
 .panel {
-    background: #1b1b26;
-    padding: 30px;
-    border-left: 1px solid #333;
+  min-width: 0;
+  background: #1b1b26;
+  padding: 30px;
+  border-left: 1px solid #333;
 }
 
 .panel h2 {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .description {
-    color: #aaa;
-    line-height: 1.6;
-    font-size: 14px;
+  color: #aaa;
+  line-height: 1.6;
+  font-size: 14px;
 }
 
 label {
-    display: block;
-    margin-top: 24px;
-    margin-bottom: 10px;
-    font-size: 13px;
-    color: #ccc;
+  display: block;
+  margin-top: 24px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: #ccc;
 }
 
 textarea,
 input,
 select {
-    width: 100%;
-    padding: 13px;
-    background: #292938;
-    color: white;
-    border: 1px solid #444;
-    border-radius: 9px;
-    font-size: 14px;
+  width: 100%;
+  min-width: 0;
+  padding: 13px;
+
+  background: #292938;
+  color: white;
+
+  border: 1px solid #444;
+  border-radius: 9px;
+
+  font-size: 14px;
 }
 
 textarea {
-    min-height: 95px;
-    resize: vertical;
+  min-height: 95px;
+  resize: vertical;
 }
 
 .mode-buttons {
-    display: flex;
-    gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
 }
 
 .mode-buttons button {
-    flex: 1;
-    padding: 12px 5px;
-    border-radius: 8px;
-    background: #303040;
-    color: white;
-    border: 1px solid #555;
-    cursor: pointer;
+  min-width: 0;
+  padding: 12px 5px;
+  border-radius: 8px;
+
+  background: #303040;
+  color: white;
+  border: 1px solid #555;
+
+  cursor: pointer;
 }
 
 .mode-buttons button.active {
-    background: #654d89;
-    border-color: #c8a6ff;
+  background: #654d89;
+  border-color: #c8a6ff;
 }
 
 .colors {
-    display: flex;
-    gap: 12px;
-    margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
 }
 
 .color {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid #777;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #777;
 }
 
 .color.active {
-    outline: 2px solid white;
-    outline-offset: 3px;
+  outline: 2px solid white;
+  outline-offset: 3px;
 }
 
 .generate {
-    width: 100%;
-    padding: 17px;
-    margin-top: 30px;
-    background: #c8a6ff;
-    color: #181020;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-}
+  width: 100%;
+  padding: 17px;
+  margin-top: 30px;
 
-.generate:hover {
-    background: #ddc7ff;
-}
+  background: #c8a6ff;
+  color: #181020;
 
-.notice {
-    color: #aaa;
-    font-size: 12px;
-    margin-top: 20px;
-    line-height: 1.6;
+  border: none;
+  border-radius: 10px;
+
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 #status {
-    color: #c8a6ff;
-    margin-top: 15px;
-    font-size: 13px;
+  color: #c8a6ff;
+  margin-top: 15px;
+  font-size: 13px;
 }
 
-.hidden {
-    display: none;
+.notice {
+  color: #aaa;
+  font-size: 12px;
+  margin-top: 20px;
+  line-height: 1.6;
 }
+
+/* MOBILE */
 
 @media (max-width: 850px) {
-    main {
-        grid-template-columns: 1fr;
-    }
 
-    .viewer-section,
-    #viewer {
-        min-height: 450px;
-        height: 55vh;
-    }
+  header {
+    padding: 20px;
+  }
 
-    .viewer-title h1 {
-        font-size: 28px;
-    }
+  .subtitle {
+    display: none;
+  }
 
-    .panel {
-        border-left: none;
-        border-top: 1px solid #333;
-    }
+  main {
+    display: block;
+    min-height: 0;
+  }
 
-    header {
-        padding: 20px;
-    }
+  .viewer-section {
+    height: 48svh;
+    min-height: 330px;
+    max-height: 520px;
+  }
+
+  .viewer-title {
+    top: 20px;
+    left: 20px;
+  }
+
+  .viewer-title h1 {
+    font-size: 28px;
+  }
+
+  .viewer-hint {
+    left: 20px;
+    bottom: 18px;
+  }
+
+  .panel {
+    padding: 25px 20px;
+    border-left: none;
+    border-top: 1px solid #333;
+  }
+
 }
+
 </style>
+
+<!--
+  Import map keeps Three.js and its add-ons
+  on the same pinned version.
+-->
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"
+  }
+}
+</script>
+
 </head>
 
 <body>
 
 <header>
-    <div class="logo">
-        charm<span>studio.</span>
-    </div>
 
-    <div class="subtitle">
-        CREATE SOMETHING PERSONAL
-    </div>
+  <div class="logo">
+    charm<span>studio.</span>
+  </div>
+
+  <div class="subtitle">
+    CREATE SOMETHING PERSONAL
+  </div>
+
 </header>
 
 <main>
 
-    <!-- 3D SHOWCASE -->
+<section class="viewer-section">
 
-    <section class="viewer-section">
+  <div id="viewer"></div>
 
-        <div id="viewer"></div>
+  <div class="viewer-title">
 
-        <div class="viewer-title">
-            <p>YOUR CREATION</p>
-            <h1>Make it yours.</h1>
-            <p>Personalized 3D keychains</p>
-        </div>
+    <p>YOUR CREATION</p>
 
-        <div class="viewer-hint">
-            Drag to rotate · Scroll or pinch to zoom
-        </div>
+    <h1>Make it yours.</h1>
 
-    </section>
+    <p>Personalized 3D keychains</p>
 
-    <!-- CREATION PANEL -->
+  </div>
 
-    <aside class="panel">
+  <div class="viewer-hint">
+    Swipe to scroll · Use two fingers to rotate
+  </div>
 
-        <h2>Create Your Keychain</h2>
+  <div
+    id="viewer-error"
+    class="viewer-error"
+    hidden
+  ></div>
 
-        <p class="description">
-            Turn your ideas into personalized
-            3D keychain designs.
-        </p>
+</section>
 
-        <label>Creation Method</label>
+<aside class="panel">
 
-        <div class="mode-buttons">
+  <h2>Create Your Keychain</h2>
 
-            <button class="active" data-mode="description">
-                Describe
-            </button>
+  <p class="description">
+    Turn your ideas into personalized
+    3D keychain designs.
+  </p>
 
-            <button data-mode="photo">
-                Photo
-            </button>
+  <label>Creation Method</label>
 
-            <button data-mode="name">
-                Name
-            </button>
+  <div class="mode-buttons">
 
-        </div>
+    <button
+      class="active"
+      data-mode="description"
+    >
+      Describe
+    </button>
 
-        <div id="description-mode">
+    <button data-mode="photo">
+      Photo
+    </button>
 
-            <label>Describe Your Idea</label>
+    <button data-mode="name">
+      Name
+    </button>
 
-            <textarea id="prompt"
-                placeholder="Describe your keychain...">A cute heart-shaped keychain</textarea>
+  </div>
 
-        </div>
+  <div id="description-mode">
 
-        <div id="photo-mode" class="hidden">
+    <label>Describe Your Idea</label>
 
-            <label>Upload a Reference Photo</label>
+    <textarea id="prompt">A cute heart-shaped keychain</textarea>
 
-            <input
-                type="file"
-                id="photo"
-                accept="image/*"
-            >
+  </div>
 
-            <p class="notice">
-                Photo-to-3D generation will be
-                connected in a later version.
-            </p>
+  <div id="photo-mode" hidden>
 
-        </div>
+    <label>Upload a Reference Photo</label>
 
-        <div id="name-mode" class="hidden">
+    <input
+      type="file"
+      id="photo"
+      accept="image/*"
+    >
 
-            <label>Enter Your Name</label>
+    <p class="notice">
+      Photo generation is coming later.
+    </p>
 
-            <input
-                type="text"
-                id="name"
-                maxlength="12"
-                placeholder="Your name"
-            >
+  </div>
 
-        </div>
+  <div id="name-mode" hidden>
 
-        <label>Keychain Shape</label>
+    <label>Enter Your Name</label>
 
-        <select id="shape">
-            <option value="heart">Heart</option>
-            <option value="star">Star</option>
-            <option value="circle">Circle</option>
-            <option value="flower">Flower</option>
-        </select>
+    <input
+      type="text"
+      id="name"
+      maxlength="12"
+      placeholder="Your name"
+    >
 
-        <label>Keychain Size</label>
+  </div>
 
-        <select id="size">
-            <option value="0.8">Small</option>
-            <option value="1" selected>Medium</option>
-            <option value="1.25">Large</option>
-        </select>
+  <label>Keychain Shape</label>
 
-        <label>Choose Color</label>
+  <select id="shape">
 
-        <div class="colors">
+    <option value="heart">Heart</option>
+    <option value="star">Star</option>
+    <option value="circle">Circle</option>
+    <option value="flower">Flower</option>
 
-            <div class="color active"
-                style="background:#c8a6ff"
-                data-color="#c8a6ff">
-            </div>
+  </select>
 
-            <div class="color"
-                style="background:#ff9cbb"
-                data-color="#ff9cbb">
-            </div>
+  <label>Keychain Size</label>
 
-            <div class="color"
-                style="background:#8fdac5"
-                data-color="#8fdac5">
-            </div>
+  <select id="size">
 
-            <div class="color"
-                style="background:#ffd28f"
-                data-color="#ffd28f">
-            </div>
+    <option value="0.8">Small</option>
+    <option value="1" selected>Medium</option>
+    <option value="1.25">Large</option>
 
-            <div class="color"
-                style="background:#ffffff"
-                data-color="#ffffff">
-            </div>
+  </select>
 
-        </div>
+  <label>Choose Color</label>
 
-        <button class="generate" id="generate">
-            Preview My Keychain
-        </button>
+  <div class="colors">
 
-        <p id="status">
-            Ready to create.
-        </p>
+    <button
+      class="color active"
+      style="background:#c8a6ff"
+      data-color="#c8a6ff"
+      aria-label="Lavender"
+    ></button>
 
-        <p class="notice">
-            Prototype mode. This version uses
-            demonstration geometry rather than
-            live AI generation. Designs are not
-            yet validated for 3D printing.
-        </p>
+    <button
+      class="color"
+      style="background:#ff9cbb"
+      data-color="#ff9cbb"
+      aria-label="Pink"
+    ></button>
 
-    </aside>
+    <button
+      class="color"
+      style="background:#8fdac5"
+      data-color="#8fdac5"
+      aria-label="Mint"
+    ></button>
+
+    <button
+      class="color"
+      style="background:#ffd28f"
+      data-color="#ffd28f"
+      aria-label="Yellow"
+    ></button>
+
+    <button
+      class="color"
+      style="background:#ffffff"
+      data-color="#ffffff"
+      aria-label="White"
+    ></button>
+
+  </div>
+
+  <button
+    class="generate"
+    id="generate"
+  >
+    Preview My Keychain
+  </button>
+
+  <p id="status">
+    Loading 3D preview...
+  </p>
+
+  <p class="notice">
+    Prototype mode. This version uses
+    demonstration geometry rather than
+    live AI generation. Designs are not
+    yet validated for 3D printing.
+  </p>
+
+</aside>
 
 </main>
 
 <script type="module">
 
-import * as THREE from
-"https://esm.sh/three@0.160.1";
+import * as THREE from "three";
 
-import { OrbitControls } from
-"https://esm.sh/three@0.160.1/examples/jsm/controls/OrbitControls.js";
+import {
+  OrbitControls
+} from "three/addons/controls/OrbitControls.js";
 
-import { FontLoader } from
-"https://esm.sh/three@0.160.1/examples/jsm/loaders/FontLoader.js";
+import {
+  FontLoader
+} from "three/addons/loaders/FontLoader.js";
 
-import { TextGeometry } from
-"https://esm.sh/three@0.160.1/examples/jsm/geometries/TextGeometry.js";
+import {
+  TextGeometry
+} from "three/addons/geometries/TextGeometry.js";
 
 
-/* ============================
-   THREE.JS SCENE
-============================ */
+/* ERROR REPORTING */
+
+const errorBox =
+  document.getElementById("viewer-error");
+
+const status =
+  document.getElementById("status");
+
+function showError(message) {
+
+  errorBox.hidden = false;
+
+  errorBox.textContent =
+    "3D viewer error: " + message;
+
+  status.textContent =
+    "Unable to display the 3D preview.";
+
+}
+
+
+/* SCENE */
 
 const container =
-    document.getElementById("viewer");
+  document.getElementById("viewer");
 
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(
-    40,
-    1,
-    0.1,
-    100
+  40,
+  1,
+  0.1,
+  100
 );
 
 camera.position.set(0, 0.5, 7);
 
-const renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    alpha: true
-});
+
+/* RENDERER */
+
+let renderer;
+
+try {
+
+  renderer = new THREE.WebGLRenderer({
+
+    antialias: false,
+    alpha: true,
+    powerPreference: "low-power"
+
+  });
+
+} catch (error) {
+
+  console.error(error);
+
+  showError("WebGL initialization failed.");
+
+  throw error;
+
+}
+
+
+/* MOBILE PERFORMANCE */
 
 renderer.setPixelRatio(
-    Math.min(window.devicePixelRatio, 2)
+  Math.min(window.devicePixelRatio || 1, 1.25)
 );
 
 renderer.outputColorSpace =
-    THREE.SRGBColorSpace;
+  THREE.SRGBColorSpace;
 
 renderer.toneMapping =
-    THREE.ACESFilmicToneMapping;
+  THREE.ACESFilmicToneMapping;
 
 renderer.toneMappingExposure = 1.5;
 
 container.appendChild(renderer.domElement);
 
 
-/* ============================
-   CAMERA CONTROLS
-============================ */
+/* TOUCH CONTROLS */
+
+renderer.domElement.style.touchAction = "pan-y";
 
 const controls = new OrbitControls(
-    camera,
-    renderer.domElement
+  camera,
+  renderer.domElement
 );
 
 controls.enableDamping = true;
@@ -475,22 +630,29 @@ controls.minDistance = 3;
 
 controls.maxDistance = 12;
 
+/*
+  One-finger gestures should scroll the page.
+  Two-finger gestures control the model.
+*/
 
-/* ============================
-   LIGHTING
-============================ */
+controls.touches.ONE = THREE.TOUCH.PAN;
+
+controls.touches.TWO = THREE.TOUCH.DOLLY_ROTATE;
+
+
+/* LIGHTING */
 
 const ambient = new THREE.HemisphereLight(
-    0xffffff,
-    0x444466,
-    2
+  0xffffff,
+  0x444466,
+  2
 );
 
 scene.add(ambient);
 
 const keyLight = new THREE.DirectionalLight(
-    0xffffff,
-    3
+  0xffffff,
+  3
 );
 
 keyLight.position.set(4, 5, 6);
@@ -498,8 +660,8 @@ keyLight.position.set(4, 5, 6);
 scene.add(keyLight);
 
 const rimLight = new THREE.DirectionalLight(
-    0xbbaaff,
-    3
+  0xbbaaff,
+  3
 );
 
 rimLight.position.set(-4, 2, -5);
@@ -507,9 +669,7 @@ rimLight.position.set(-4, 2, -5);
 scene.add(rimLight);
 
 
-/* ============================
-   KEYCHAIN GROUP
-============================ */
+/* KEYCHAIN */
 
 let charm = new THREE.Group();
 
@@ -522,489 +682,528 @@ let selectedMode = "description";
 let font = null;
 
 
-/* ============================
-   MATERIALS
-============================ */
+/* MATERIAL */
 
 function createMaterial(color) {
 
-    return new THREE.MeshPhysicalMaterial({
+  return new THREE.MeshPhysicalMaterial({
 
-        color: color,
+    color: color,
 
-        metalness: 0.15,
+    metalness: 0.15,
 
-        roughness: 0.3,
+    roughness: 0.32,
 
-        clearcoat: 0.8,
+    clearcoat: 0.6
 
-        clearcoatRoughness: 0.2
-
-    });
+  });
 
 }
 
 
-/* ============================
-   SHAPE GENERATION
-============================ */
+/* SHAPES */
 
 function createShape(type) {
 
-    const shape = new THREE.Shape();
+  const shape = new THREE.Shape();
 
-    if (type === "heart") {
+  if (type === "heart") {
 
-        shape.moveTo(0, -1);
+    shape.moveTo(0, -1);
 
-        shape.bezierCurveTo(
-            -0.4, -0.7,
-            -1.3, 0,
-            -1.1, 0.7
-        );
+    shape.bezierCurveTo(
+      -0.4, -0.7,
+      -1.3, 0,
+      -1.1, 0.7
+    );
 
-        shape.bezierCurveTo(
-            -0.9, 1.4,
-            -0.2, 1.3,
-            0, 0.8
-        );
+    shape.bezierCurveTo(
+      -0.9, 1.4,
+      -0.2, 1.3,
+      0, 0.8
+    );
 
-        shape.bezierCurveTo(
-            0.2, 1.3,
-            0.9, 1.4,
-            1.1, 0.7
-        );
+    shape.bezierCurveTo(
+      0.2, 1.3,
+      0.9, 1.4,
+      1.1, 0.7
+    );
 
-        shape.bezierCurveTo(
-            1.3, 0,
-            0.4, -0.7,
-            0, -1
-        );
+    shape.bezierCurveTo(
+      1.3, 0,
+      0.4, -0.7,
+      0, -1
+    );
 
-    }
+  }
 
-    else if (type === "star") {
+  else if (type === "star") {
 
-        const outer = 1.2;
-        const inner = 0.55;
+    for (let i = 0; i < 10; i++) {
 
-        for (let i = 0; i < 10; i++) {
+      const angle =
+        Math.PI / 2 + i * Math.PI / 5;
 
-            const angle =
-                Math.PI / 2 +
-                i * Math.PI / 5;
+      const radius =
+        i % 2 === 0 ? 1.2 : 0.55;
 
-            const radius =
-                i % 2 === 0 ? outer : inner;
+      const x =
+        Math.cos(angle) * radius;
 
-            const x =
-                Math.cos(angle) * radius;
+      const y =
+        Math.sin(angle) * radius;
 
-            const y =
-                Math.sin(angle) * radius;
+      if (i === 0) {
 
-            if (i === 0) {
-                shape.moveTo(x, y);
-            } else {
-                shape.lineTo(x, y);
-            }
+        shape.moveTo(x, y);
 
-        }
+      } else {
 
-        shape.closePath();
+        shape.lineTo(x, y);
+
+      }
 
     }
 
-    else if (type === "flower") {
+    shape.closePath();
 
-        for (let i = 0; i <= 120; i++) {
+  }
 
-            const angle =
-                i * Math.PI / 60;
+  else if (type === "flower") {
 
-            const radius =
-                0.85 +
-                0.25 * Math.cos(6 * angle);
+    for (let i = 0; i <= 120; i++) {
 
-            const x =
-                Math.cos(angle) * radius;
+      const angle =
+        i * Math.PI / 60;
 
-            const y =
-                Math.sin(angle) * radius;
+      const radius =
+        0.85 + 0.25 * Math.cos(6 * angle);
 
-            if (i === 0) {
-                shape.moveTo(x, y);
-            } else {
-                shape.lineTo(x, y);
-            }
+      const x =
+        Math.cos(angle) * radius;
 
-        }
+      const y =
+        Math.sin(angle) * radius;
 
-        shape.closePath();
+      if (i === 0) {
 
-    }
+        shape.moveTo(x, y);
 
-    else {
+      } else {
 
-        shape.absarc(
-            0,
-            0,
-            1.1,
-            0,
-            Math.PI * 2,
-            false
-        );
+        shape.lineTo(x, y);
+
+      }
 
     }
 
-    return shape;
+    shape.closePath();
+
+  }
+
+  else {
+
+    shape.absarc(
+      0,
+      0,
+      1.1,
+      0,
+      Math.PI * 2,
+      false
+    );
+
+  }
+
+  return shape;
 
 }
 
 
-/* ============================
-   BUILD KEYCHAIN
-============================ */
+/* CLEAN UP OLD MODELS */
+
+function disposeGroup(group) {
+
+  group.traverse(object => {
+
+    if (object.isMesh) {
+
+      object.geometry.dispose();
+
+      if (Array.isArray(object.material)) {
+
+        object.material.forEach(
+          material => material.dispose()
+        );
+
+      } else {
+
+        object.material.dispose();
+
+      }
+
+    }
+
+  });
+
+}
+
+
+/* BUILD KEYCHAIN */
 
 function buildKeychain() {
 
-    scene.remove(charm);
+  scene.remove(charm);
 
-    charm = new THREE.Group();
+  disposeGroup(charm);
 
-    scene.add(charm);
+  charm = new THREE.Group();
 
-    const shapeType =
-        document.getElementById("shape").value;
+  scene.add(charm);
 
-    const size =
-        parseFloat(
-            document.getElementById("size").value
-        );
+  const shapeType =
+    document.getElementById("shape").value;
 
-    const shape = createShape(shapeType);
+  const size =
+    parseFloat(
+      document.getElementById("size").value
+    );
 
-    const geometry = new THREE.ExtrudeGeometry(
-        shape,
+  const shape = createShape(shapeType);
+
+  const geometry = new THREE.ExtrudeGeometry(
+
+    shape,
+
+    {
+      depth: 0.3,
+      bevelEnabled: true,
+      bevelThickness: 0.1,
+      bevelSize: 0.08,
+      bevelSegments: 3,
+      curveSegments: 24
+    }
+
+  );
+
+  const body = new THREE.Mesh(
+    geometry,
+    createMaterial(selectedColor)
+  );
+
+  charm.add(body);
+
+
+  /* ATTACHMENT LOOP */
+
+  const loop = new THREE.Mesh(
+
+    new THREE.TorusGeometry(
+      0.22,
+      0.075,
+      12,
+      32
+    ),
+
+    createMaterial("#dddddd")
+
+  );
+
+  loop.position.set(0, 1.35, 0.2);
+
+  charm.add(loop);
+
+
+  /* KEY RING */
+
+  const ring = new THREE.Mesh(
+
+    new THREE.TorusGeometry(
+      0.32,
+      0.045,
+      12,
+      32
+    ),
+
+    new THREE.MeshStandardMaterial({
+
+      color: "#dddddd",
+
+      metalness: 0.75,
+
+      roughness: 0.25
+
+    })
+
+  );
+
+  ring.position.set(0, 1.75, 0.2);
+
+  charm.add(ring);
+
+
+  /* NAME TEXT */
+
+  if (selectedMode === "name" && font) {
+
+    const name =
+      document.getElementById("name")
+      .value.trim().toUpperCase();
+
+    if (name) {
+
+      const textGeometry = new TextGeometry(
+
+        name,
+
         {
-            depth: 0.3,
-            bevelEnabled: true,
-            bevelThickness: 0.1,
-            bevelSize: 0.08,
-            bevelSegments: 4,
-            curveSegments: 40
+          font: font,
+
+          size: Math.min(
+            0.35,
+            2.8 / name.length
+          ),
+
+          depth: 0.05,
+
+          curveSegments: 4
         }
-    );
 
-    const material =
-        createMaterial(selectedColor);
+      );
 
-    const body = new THREE.Mesh(
-        geometry,
-        material
-    );
+      textGeometry.computeBoundingBox();
 
-    charm.add(body);
+      const bounds =
+        textGeometry.boundingBox;
 
+      const width =
+        bounds.max.x - bounds.min.x;
 
-    /* ATTACHMENT LOOP */
+      textGeometry.translate(
+        -width / 2,
+        -0.12,
+        0.5
+      );
 
-    const loopGeometry =
-        new THREE.TorusGeometry(
-            0.22,
-            0.075,
-            16,
-            48
-        );
+      const textMesh = new THREE.Mesh(
 
-    const loopMaterial =
-        createMaterial("#dddddd");
+        textGeometry,
 
-    const loop = new THREE.Mesh(
-        loopGeometry,
-        loopMaterial
-    );
+        createMaterial("#ffffff")
 
-    loop.position.set(
-        0,
-        1.35,
-        0.2
-    );
+      );
 
-    charm.add(loop);
-
-
-    /* METAL KEY RING */
-
-    const ring = new THREE.Mesh(
-
-        new THREE.TorusGeometry(
-            0.32,
-            0.045,
-            12,
-            48
-        ),
-
-        new THREE.MeshStandardMaterial({
-            color: "#dddddd",
-            metalness: 0.9,
-            roughness: 0.2
-        })
-
-    );
-
-    ring.position.set(
-        0,
-        1.75,
-        0.2
-    );
-
-    charm.add(ring);
-
-
-    /* PERSONALIZED NAME */
-
-    if (
-        selectedMode === "name" &&
-        font
-    ) {
-
-        const name =
-            document.getElementById("name")
-            .value.trim().toUpperCase();
-
-        if (name) {
-
-            const textGeometry =
-                new TextGeometry(name, {
-
-                    font: font,
-
-                    size: Math.min(
-                        0.35,
-                        2.8 / name.length
-                    ),
-
-                    depth: 0.05,
-
-                    curveSegments: 6
-
-                });
-
-            textGeometry.computeBoundingBox();
-
-            const bounds =
-                textGeometry.boundingBox;
-
-            const width =
-                bounds.max.x - bounds.min.x;
-
-            textGeometry.translate(
-                -width / 2,
-                -0.12,
-                0.5
-            );
-
-            const textMesh =
-                new THREE.Mesh(
-
-                    textGeometry,
-
-                    createMaterial("#ffffff")
-
-                );
-
-            charm.add(textMesh);
-
-        }
+      charm.add(textMesh);
 
     }
 
-    charm.scale.setScalar(size);
+  }
 
-    document.getElementById("status")
-        .textContent =
-        "Preview updated successfully.";
+  charm.scale.setScalar(size);
+
+  status.textContent =
+    "Preview updated. Use two fingers to rotate on mobile.";
 
 }
 
 
-/* ============================
-   FONT LOADING
-============================ */
+/* LOAD FONT */
 
 const fontLoader = new FontLoader();
 
 fontLoader.load(
 
-    "https://threejs.org/examples/fonts/helvetiker_bold.typeface.json",
+  "https://threejs.org/examples/fonts/helvetiker_bold.typeface.json",
 
-    loadedFont => {
+  loadedFont => {
 
-        font = loadedFont;
+    font = loadedFont;
 
-        if (selectedMode === "name") {
-            buildKeychain();
-        }
-
+    if (selectedMode === "name") {
+      buildKeychain();
     }
+
+  },
+
+  undefined,
+
+  error => {
+    console.warn("Font loading failed", error);
+  }
 
 );
 
 
-/* ============================
-   CREATION MODES
-============================ */
+/* CREATION MODES */
 
 document.querySelectorAll(
-    ".mode-buttons button"
+  ".mode-buttons button"
 ).forEach(button => {
 
-    button.addEventListener("click", () => {
+  button.addEventListener("click", () => {
 
-        document.querySelectorAll(
-            ".mode-buttons button"
-        ).forEach(b => {
+    document.querySelectorAll(
+      ".mode-buttons button"
+    ).forEach(b => {
 
-            b.classList.remove("active");
-
-        });
-
-        button.classList.add("active");
-
-        selectedMode = button.dataset.mode;
-
-        ["description", "photo", "name"]
-            .forEach(mode => {
-
-                document.getElementById(
-                    mode + "-mode"
-                ).classList.toggle(
-                    "hidden",
-                    mode !== selectedMode
-                );
-
-            });
-
-        buildKeychain();
+      b.classList.remove("active");
 
     });
+
+    button.classList.add("active");
+
+    selectedMode = button.dataset.mode;
+
+    ["description", "photo", "name"]
+      .forEach(mode => {
+
+        document.getElementById(
+          mode + "-mode"
+        ).hidden = mode !== selectedMode;
+
+      });
+
+    buildKeychain();
+
+  });
 
 });
 
 
-/* ============================
-   COLOR SELECTION
-============================ */
+/* COLORS */
 
 document.querySelectorAll(
-    ".color"
-).forEach(colorButton => {
+  ".color"
+).forEach(button => {
 
-    colorButton.addEventListener(
-        "click",
-        () => {
+  button.addEventListener("click", () => {
 
-            document.querySelectorAll(
-                ".color"
-            ).forEach(c => {
+    document.querySelectorAll(
+      ".color"
+    ).forEach(b => {
 
-                c.classList.remove("active");
+      b.classList.remove("active");
 
-            });
+    });
 
-            colorButton.classList.add(
-                "active"
-            );
+    button.classList.add("active");
 
-            selectedColor =
-                colorButton.dataset.color;
+    selectedColor = button.dataset.color;
 
-            buildKeychain();
+    buildKeychain();
 
-        }
-    );
+  });
 
 });
 
 
-/* ============================
-   GENERATE PREVIEW
-============================ */
+/* PREVIEW BUTTON */
 
 document.getElementById("generate")
-    .addEventListener("click", () => {
-
-        buildKeychain();
-
-    });
+  .addEventListener("click", buildKeychain);
 
 
-/* ============================
-   RESPONSIVE RENDERER
-============================ */
+/* RESPONSIVE VIEWER */
 
 function resizeViewer() {
 
-    const width =
-        container.clientWidth;
+  const width =
+    Math.max(1, container.clientWidth);
 
-    const height =
-        container.clientHeight;
+  const height =
+    Math.max(1, container.clientHeight);
 
-    camera.aspect = width / height;
+  camera.aspect = width / height;
 
-    camera.updateProjectionMatrix();
+  camera.updateProjectionMatrix();
 
-    renderer.setSize(
-        width,
-        height,
-        false
-    );
+  renderer.setSize(
+    width,
+    height,
+    false
+  );
 
 }
 
 new ResizeObserver(
-    resizeViewer
+  resizeViewer
 ).observe(container);
 
 
-/* ============================
-   ANIMATION
-============================ */
+/* ANIMATION */
 
-const clock = new THREE.Clock();
+let lastFrame = 0;
 
-function animate() {
+function animate(time) {
 
-    requestAnimationFrame(animate);
+  requestAnimationFrame(animate);
 
-    const delta = Math.min(
-        clock.getDelta(),
-        0.05
-    );
+  if (document.hidden) {
+    return;
+  }
 
-    charm.rotation.y += delta * 0.25;
+  /*
+    Cap rendering near 30 FPS to reduce
+    workload on older mobile devices.
+  */
 
-    controls.update();
+  if (time - lastFrame < 33) {
+    return;
+  }
 
-    renderer.render(
-        scene,
-        camera
-    );
+  const delta = Math.min(
+    (time - lastFrame) / 1000,
+    0.05
+  );
+
+  lastFrame = time;
+
+  charm.rotation.y += delta * 0.23;
+
+  controls.update();
+
+  try {
+
+    renderer.render(scene, camera);
+
+  } catch (error) {
+
+    console.error(error);
+
+    showError(error.message);
+
+  }
 
 }
 
 
-/* ============================
-   INITIALIZE
-============================ */
+/* WEBGL CONTEXT ERROR */
+
+renderer.domElement.addEventListener(
+
+  "webglcontextlost",
+
+  event => {
+
+    event.preventDefault();
+
+    showError(
+      "The graphics context was lost. Try refreshing the page."
+    );
+
+  },
+
+  false
+
+);
+
+
+/* START */
 
 resizeViewer();
 
 buildKeychain();
 
-animate();
+requestAnimationFrame(animate);
 
 </script>
 
